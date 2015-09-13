@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+
+	<head>
+		<title>Moodoo</title>
+		
+		
+		
+		<meta charset="UTF-8">
+		<!--Stops IE from rendering as old versions -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" >
+		<!--disable highlight on windows mobile devices -->
+		<meta name="msapplication-tap-highlight" content="no" />
+		
+		<!--prevent ios pinch zoom -->
+		<meta name="viewport" content="user-scalable=no" />
+		<meta name="viewport" content="initial-scale=1.0">
+		<!-- main stylesheet -->
+		<link rel='stylesheet' href='moodooStyles-2.14.2.css'/>
+		<!--IE Conditional comments-->
+		<!--[if IE]>
+			<link rel='stylesheet' href='moodooStyles-IE.css'/>
+		<![endif]-->
+		
+		<!-- favicon -->
+		<link rel='shortcut icon' type='image/png' href='images/favicon.ico' />
+		<!-- apple icons -->
+		<link rel="apple-touch-icon" sizes="57x57" href="images/favicon_large.png" />
+		<link rel="apple-touch-icon" sizes="72x72" href="images/favicon_large.png" />
+		<link rel="apple-touch-icon" sizes="114x114" href="images/favicon_extralarge.png" />
+		<link rel="apple-touch-icon" sizes="144x144" href="images/favicon_extralarge.png" />
+		
+		
+		<!--jquery - many functions of Moodoo are Jquery dependent-->
+		<script type="text/javascript" src="jquery-1.10.2.min.js"></script>
+		<!--jquery cookie extension-->
+
+		<script type="text/javascript" src="jquery.cookie.js"></script>
+		
+		
+		<!--main external js script-->
+
+		<script type="text/javascript" src="moodooMain-2.14.2.js"></script>
+		
+		<!--google fonts embed-->
+
+		<link href='//fonts.googleapis.com/css?family=Raleway:100,400,300,400, 500, 700' rel='stylesheet' type='text/css'>
+		
+		<!--modernizr - required for geolocation -->
+		
+		<script type="text/javascript" src="modernizr-1.6.min.js"></script>
+		
+		<!--hammer.js supports cross-device touch events-->
+
+		<script type="text/javascript" src="hammer.min.js"></script>
+		
+		
+		<!--markerclusterer - provides clustering function for map markers -->
+		
+		<!--<script type="text/javascript" src="markerclusterer.js" ></script>-->
+	
+		<!--Google maps api key-->
+		
+		<!-- <script src='//maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAA6LBxxCL-8-xqALLwrUZ8bhSeydozdMq_vS9wqUv3khzUTCGvphSRfdJNdd8P-9SjVDLM8iA23VY9TA' type='text/javascript'></script>-->
+		
+		
+		<script type="text/javascript">
+			
+			$(document).ready(init);
+		</script>
+		
+		<noscript><p>Your browser does not have JavaScript enabled. To use Moodoo, please enable Javascript.</p></noscript>
+		
+		
+		<!-- Google Code for New user Conversion Page -->
+		<script type="text/javascript">
+		/* <![CDATA[ */
+		var google_conversion_id = 959257350;
+		var google_conversion_language = "en";
+		var google_conversion_format = "3";
+		var google_conversion_color = "ffffff";
+		var google_conversion_label = "tFlBCPyMslgQhra0yQM";
+		var google_remarketing_only = false;
+		/* ]]> */
+		</script>
+		
+		
+		<!-- Google Analytics Code -->
+		
+		<script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		
+		  ga('create', 'UA-17241935-5', 'auto');
+		  ga('send', 'pageview');
+		
+		</script>
+		
+		
+		
+		<!--Facebook meta tags-->
+		
+		<meta property="og:title" content="Moodoo: The Mood Monitoring Tool"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="https://www.moodoo.net"/>
+    <meta property="og:image" content="https://www.moodoo.net/images/square_logo2.png"/>
+    <meta property="og:site_name" content="Moodoo"/>
+   
+    <meta property="og:description" content="Moodoo is an online tool that helps you monitor your moods, and share how you are feeling with your friends."/>
+  
+	<meta property='fb:admins' content='john.galea'>
+
+	<meta property='fb:app_id' content='378277215632047'>	
+		
+	</head>
+	<body>
+		
+		
+		<!--fb like button support -->
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=173635349313132&version=v2.0";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
+
+		<!--end fb code -->
+		
+		
+		<!--<div id="bgtest"></div>-->
+		
+		<div id="wrapper">
+		
+		<div id="header">
+			<div id="icon">
+				<img alt="Moodoo Icon" src="images/icon_trans.svg"/>
+			</div>
+			<div id="title">
+				<img alt="Moodoo" src="images/logo_trans_beta.svg">
+			</div>
+		</div><!--end header-->
+		<div id="main">
+			<div  id="tools" class="blur">
+				<a id="toolButton"></a>
+				
+				<!--<a class='toolsButton' id="settingsButton">Settings</a>-->
+				<a class='toolsButton' id="contactButton">Contact</a>
+				<a class='toolsButton' id="signOutButton">Sign Out</a>
+			</div>
+			
+			
+			<div class='section' id='auth'>
+				
+				<h1>Welcome to Moodoo.</h1>
+				<p style='margin-left:auto; margin-right:auto; display: inline-block'>Moodoo is an online app where you can monitor your moods, and track your feelings over time.</p>
+
+				<div id="janrainEngageEmbed" style="visibility: hidden"></div>
+				
+				
+			</div>
+			
+			<div id="communication" class="section"></div>
+			
+			<div class="section" id="moodInput">
+				
+				<ul>
+					<li><a id="zappyButton" mood='9' class='moodSelectButton'></a><div></div></li>
+					<li><a id="snappyButton" mood='8' class='moodSelectButton'></a></li>
+					<li><a id="bouncyButton" mood='7' class='moodSelectButton'></a></li>
+					<li><a id="boppyButton" mood='6' class='moodSelectButton'></a></li>
+					<li><a id="happyButton" mood='5' class='moodSelectButton'></a></li>
+					<li><a id="fuzzyButton" mood='4' class='moodSelectButton'></a></li>
+					<li><a id="grumpyButton" mood='3' class='moodSelectButton'></a></li>
+					<li><a id="narkyButton" mood='2' class='moodSelectButton'></a></li> 
+					<li><a id="grouchyButton" mood='1' class='moodSelectButton'></a></li>
+					<li><a id="gloomyButton" mood='0' class='moodSelectButton'></a></li>
+				</ul>
+			
+			</div>
+			<div class="section" id="panic">
+				<a id="panicButton" class="moodSelectButton"></a>
+			</div>
+			<div class="section" id="statusBox">
+					<h1 id="statusLabel">Why are you feeling this way?</h1>
+					<div id="statusInput"><input type="text" id="status" name="status"></input></div>
+					<ul>
+						<li><a class="button" id="updateMoodButton">Update</a></li>
+						<li><a class="button" id="cancelUpdateButton">Change Mood</a></li>
+						
+						
+						
+					</ul>
+					
+			</div>
+			<div id="manualLocation" class="section">
+			
+			</div><!--end manualLocation -->
+			<div id="locationError" class="section">
+								
+			</div>
+
+			<div id="recentUpdates" class="section">
+				
+				<h1>Your recent updates:</h1>
+				<div id="recentUpdateTable">
+					
+					
+				</div>
+				<a class="button" style="margin-top:20px;" id="showMoreUpdatesButton">Show more mood updates...</a>
+				<a class="button" id="showAllUpdatesButton">Show all mood updates...</a>
+				<a class="button" id="showRecentUpdatesButton">Show only recent updates...</a>
+			</div>
+			
+			<div id="mooderator" class="section">
+				<h1>Here's how your mood has changed recently:</h1>
+				<canvas id="mooderatorGraph" ></canvas>
+				<p id="graphHelp"></p>
+				<canvas id="miniGraph" ></canvas>
+				
+				<div id="miniGraphSliderHolder">
+					<div id="miniGraphSlider">
+						<div id="sliderHandleLeft"></div>
+						<div id="sliderHandleRight"></div>
+					</div><!--end miniGraphSlider-->
+				</div>	
+			</div><!--end mooderator-->
+			<div id="mooderatorPopUpLabel" class="blur">	
+				
+			</div><!--end mooderatorPopUpLabel-->
+			<div id="moodPie" class="section">
+				 
+						
+						<h1>The MoodPie shows which moods you've felt most often:</h1>
+				
+			            <!--<svg>
+						  <defs>
+						    <clipPath id="piemask">
+						      <circle cx="284" cy="213" r="213" />
+						    </clipPath>
+						  </defs>
+						</svg>-->	            
+			            <!--<img id="masktest"src="images/cloud-background_moodoo2.png"/>-->
+			             <canvas id="moodPieGraph"></canvas>
+
+			            <div id="moodPieLabel">
+							
+							<span id="moodIcon"></span>
+							<span id="moodTextLabel"></span>
+							<span id="percentage"></span>
+						</div><!--end moodPieLabel-->
+			         
+			        
+			    
+						
+			</div><!--end mood pie-->
+			<div id="contact" class="section">
+				<form >
+					<h1>Contact the Moodoo Team</h1>
+					<p>Got a question? Feedback? A bug report? Tell us about it here.</p>
+					<p><label class="contactLabel" for="email">Email Address</label></p>
+					<p><input type="text" id="email" name="email"></input></p>
+					<p><label class="contactLabel" for="name">Name</label></p>
+					<p><input type="text" id="name" name="name"></input></p>
+					<p><label class="subjectLabel" for="subject">Subject</label></p>
+					<p><input type="text" id="subject" name="subject"></input></p>
+					<p><label class="contactLabel" for="message">Message</label></p>
+					<p><textarea rows="10" cols="30" id="message" name="message"></textarea></p>
+					<p><button id="submitContactForm" type="submit">Send Message</button><button id="cancelContactForm">Cancel</button></p>
+				</form>
+			</div>
+			
+			<div id="spacer" width="100%" height="1"></div>
+			
+			
+		</div><!--end main-->
+		
+		
+		<div id="footer">
+			
+			<div class="externalResources">If you or someone you know are suffering from depression or anxiety and need help, visit <a href='//www.beyondblue.org.au'>beyondblue.org.au</a> or call Lifeline on 13 11 44. If you are outside Australia, contact your local health service. For emergencies in Australia dial 000.</div>
+			<!--<div class="externalResources" style='width: 640px; margin-left:auto; margin-right:auto'><p style='margin-left:auto; margin-right:auto; display: inline-block'>Moodoo is non-profit, completely free to use and ad-free. We are currently running a Pozible campaign to keep it that way. Please support Moodoo!</p>
+			<script src='//www.pozible.com/v4/js/widget_iframe.js'></script>
+<div class='pozible_widget' pz-pending pz-type='embed' id='192684' style='max-width: 640px; min-width:300px; '></div>-->
+			<div class="fb-like" data-href="//www.facebook.com/moodoogroup?ref=bookmarks" data-width="150" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true" data-colorscheme="light"></div>
+			<a href="//twitter.com/MoodooMoodApp" class="twitter-follow-button" data-show-count="false">Follow @MoodooMoodApp</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+			<span id="copyright"><p>&copy; Copyright 2010-2014 Moodoo. <br/> Moodoo has a </p><a href=''><img src='images/fuzzy_boundary_moodoo.svg'/></a></span>
+		</div>
+		
+		</div><!--end wrapper-->
+		
+	</body>
+</html>

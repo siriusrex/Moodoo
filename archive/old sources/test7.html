@@ -1,0 +1,392 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+
+<link rel="stylesheet" type="text/css" href="kronografiStyles.css"/>
+
+<script type="text/javascript" src="jquery-1.10.2.min.js"></script>
+
+<script type="text/javascript">
+
+//var wholeSpan=parseFloat(4.346e17);
+
+//span of universe in years (scientific notation) - constant
+var wholeSpan=parseFloat(15.1e9);
+
+//span of window viewport in years - variable. I.e. how many years does the current window width represent?
+var windowSpan;
+
+//width of the whole main timeline in pixels - default is window width
+var pixelWidth=$(window).width();
+
+//left scroll value - default is 0
+var baseX=150;
+
+var spaceBetweenMarkers = 200;
+
+var startX=150;
+//TimeSpan array - an array of TimeSpan objects
+var TS_array=new Array(null);
+
+//, 65000000, 185000000, 288800000, 42000000, 3000000, 288800000, 288800000);
+
+TS_array.push(new timeSpan('Dinosaurs', '#336699 url(dinoGroupShot.png)', 66000000, 201000000));
+TS_array.push(new timeSpan('Jurassic', 'rgba(255, 255, 255, 0.3)', 145000000, 201000000));
+TS_array.push(new timeSpan('Triassic', 'rgba(255, 255, 255, 0.5)', 201000000, 252000000));
+TS_array.push(new timeSpan('Mammals', 'rgba(255, 255, 255, 0.3) url(mammal_1.jpg)', 0, 167000000));
+TS_array.push(new timeSpan('Humans', 'rgba(255, 255, 255, 0.5)', 0, 3000000));
+TS_array.push(new timeSpan('2nd Millenium AD', 'green', 13, 1013));
+TS_array.push(new timeSpan('Earth', 'rgba(255, 255, 255, 0.5) url(Earth-View-from-Outer-Space-Wallpaper.jpg)', 0, 4500000000));
+TS_array.push(new timeSpan('Last Million', 'rgba(255, 255, 255, 0.3)', 0, 1000000));
+TS_array.push(new timeSpan('Eastern Roman Empire', 'red url(Istanbul-Hagia-Sophia.jpg)', 1000, 2245));
+TS_array.push(new timeSpan('Iron Age', 'orange', 2513, 3213));
+TS_array.push(new timeSpan('John Galea', 'rgba(255, 255, 255, 0.5)', 0, 32));
+TS_array.push(new timeSpan('Nikola Tesla', 'rgba(255, 255, 255, 0.3)', 70, 157));
+TS_array.push(new timeSpan('Abraham Lincoln', 'rgba(255, 255, 255, 0.3)', 148, 204));
+
+
+TS_array.push(new timeSpan('Michelangelo', 'rgba(80, 134, 200, 0.3)', 449, 538));
+
+TS_array.push(new timeSpan('20th Century', 'rgba(255, 255, 255, 0.5)', 13, 113));
+TS_array.push(new timeSpan('Indigenous Occupation of Australia', 'rgba(255, 255, 255, 0.3)', 0, 40000));
+TS_array.push(new timeSpan('Agriculture', 'rgba(255, 255, 255, 0.5)', 0, 14013));
+TS_array.push(new timeSpan('Last Ice Age', 'rgba(255, 35, 45, 0.5)', 10000, 110000));
+
+function init(){
+	logIt('running');
+	
+	 
+	//logIt('wholeSpan='+wholeSpan);
+	
+	//handle scroll event	
+	$(window).scroll(scrollTriggered);
+	$('#timeSpan_labels').height=$(window).height();
+	//main display function - draws the timeline
+	drawTimeline();
+	
+}
+
+function drawTimeline(){
+	
+	//remove all child divs from main timeline
+	$('#timeline_container').children().remove();
+	
+	//remove all child divs from main timeline
+	$('#timeSpan_labels').children().remove();
+	$('#timeSpan_labels').height=$(window).height;
+	
+	//resize timeline background to width of window
+	var containerWidth=pixelWidth;
+	if (containerWidth>$(window).width()){
+		containerWidth=$(window).width();
+	}
+
+	$('#timeline_container').css('width', containerWidth+'px');
+	
+	addMarkers();
+	
+	//main loop, loops through TimeSpan array and renders TimeSpans which intersect with current viewport
+	
+		
+	for (var i=1; i<TS_array.length; i++){
+	
+		
+		//logIt('TS_array['+i+']='+TS_array[i]);
+		
+		//work out the width of timeSpan 'i' as percentage of the whole timeline pixelwidth
+		var pxWidth=Math.floor(((TS_array[i].earliestEnd-TS_array[i].latestBeginning)/wholeSpan)*pixelWidth);
+	
+		//work out the x position of timeSpan 'i' as percentage of the whole timeline pixelwidth
+		var xOffset=baseX+Math.floor((TS_array[i].earliestBeginning/wholeSpan)*pixelWidth);
+		//logIt('pxWidth='+pxWidth);
+		//logIt('xOffset='+xOffset);
+		
+		if ((xOffset+pxWidth)>$(window).width()){
+			pxWidth=$(window).width()-xOffset;
+		}
+		//logIt('new pxWidth='+pxWidth);
+		
+		if (xOffset<$(window).width() && (pxWidth>1)){
+		
+			var cleanEarliestBeginning='';
+			if (TS_array[i].earliestBeginning>1000000){
+				cleanEarliestBeginning=TS_array[i].earliestBeginning/1000000+' million';
+			}
+			else {
+				cleanEarliestBeginning=TS_array[i].earliestBeginning;
+			}
+			
+			var cleanLatestEnd='';
+			
+			if (TS_array[i].latestEnd>1000000){
+				cleanLatestEnd=TS_array[i].latestEnd/1000000+' million';
+			}
+			else {
+				cleanLatestEnd=TS_array[i].latestEnd;
+			}
+		
+			$('#timeline_container').append('<div id="'+i+'" class="timeSpan" style="width:'+pxWidth.toString()+'px; background: '+TS_array[i].background+'; background-attachment: fixed; background-position: center center; margin-left:'+xOffset.toString()+'px"></div>');
+			$('#timeSpan_labels').append('<div class="timeSpan_label" id="label'+i+'"><span class="timeSpan_title">'+TS_array[i].title+'</span><span class="timeSpan_dataLabel"> '+cleanEarliestBeginning+' years ago to<br/>'+cleanLatestEnd+' years ago</span></div>');
+
+		}
+	}
+
+}
+
+function logIt(msg){
+			if (window.console) {
+				console.log(msg);
+			}
+}
+		
+
+function percentify (smallValue, largeValue){
+	percentNumber= smallValue/largeValue*100000000;
+	//logIt('percentNumber='+percentNumber);
+	return parseInt(percentNumber);
+}
+
+//timeSpan class - constructor
+function timeSpan(title, background, beginning, end, earliestBeginning, latestEnd) {
+	this.title=title;
+	if (earliestBeginning){
+		this.earliestBeginning=convertDate(earliestBeginning, 'yearsAgo');
+	}
+	else {
+		this.earliestBeginning=convertDate(beginning, 'yearsAgo');
+	}
+	
+	if (latestEnd){
+		this.latestEnd=convertDate(latestEnd, 'yearsAgo');
+	}
+	else {
+		this.latestEnd=end;
+	}
+	
+	this.latestBeginning=convertDate(beginning, 'yearsAgo');
+	this.earliestEnd=convertDate(end, 'yearsAgo');
+	
+	this.name='';
+	this.description='';
+	this.background=background;
+}
+
+//timeSpan class- convertDate
+function convertDate(inputDate, outputFormat){
+	var outputDate=inputDate;
+	return outputDate;
+}
+
+
+function scrollTriggered(){
+	//logIt('scroll triggered, scrollLeft='+$(window).scrollLeft());
+		
+	
+}
+
+
+function zoomIn(){
+	//store old pixel width in a temp var - this is so we can work out how much to pan left to compensate for stretching & make a smooth zoom
+  	var oldPixelWidth=pixelWidth;
+  	var oldCentre=Math.abs(baseX)+($(window).width()/2);
+  	
+  	pixelWidth=pixelWidth*1.25;
+  	
+  	var newCentre=(oldCentre/oldPixelWidth)*pixelWidth;
+  	
+  	
+  	var scrollAmount=0;
+  	
+  	
+  	
+  	//conditional stops zoom from pushing timespans beyond 'now' point
+  	logIt('baseX='+baseX);
+  	if (baseX<startX) {
+  		scrollAmount=newCentre-oldCentre;
+  	
+  	}
+  	
+  	logIt('baseX='+baseX);
+  	logIt('oldPixelWidth='+oldPixelWidth);
+  	logIt('pixelWidth='+pixelWidth);
+ 	logIt('oldCentre='+oldCentre);
+ 	logIt('newCentre='+newCentre);
+ 	logIt('scrollAmount='+scrollAmount);
+  	
+  	scrollRight(scrollAmount);
+}
+
+
+function zoomOut(){
+	var oldPixelWidth=pixelWidth;
+  	var oldCentre=Math.abs(baseX)+($(window).width()/2);
+  	
+	
+	pixelWidth=pixelWidth*0.80;
+	
+	var newCentre=(oldCentre/oldPixelWidth)*pixelWidth;
+  	
+
+	var scrollAmount=oldCentre-newCentre;
+
+	scrollLeft(scrollAmount);
+}
+
+function scrollLeft(amount){
+	baseX+=amount;
+	if (baseX>=startX){
+		baseX=startX;
+	}
+	drawTimeline();
+}
+
+function scrollRight(amount){
+	baseX-=amount;
+	
+	drawTimeline();
+}
+
+
+function addMarkers(){
+	$('#timeline_container').append('<div id="reference_ruler"></div>');
+	$('#reference_ruler').children().remove();
+	$('#reference_ruler').append('<div id="nowMarker" class="marker">NOW</div></div>');
+	
+	$('#nowMarker').css('margin-left', baseX+'px');
+	
+	windowSpan=($(window).width()/pixelWidth)*wholeSpan;
+	
+	logIt('windowSpan='+windowSpan);
+	logIt('windowSpan/6='+windowSpan/6);
+	
+	//trying to put a marker every billion years
+	
+	//work out the x position of timeSpan 'i' as percentage of the whole timeline pixelwidth
+	
+	var markerUnit='';
+	var markerMultiplier=1;
+	var markerPeriod=windowSpan/5;
+	
+	if (markerPeriod>2000000000) {
+		markerPeriod=2000000000; 
+		markerUnit=' billion';
+		markerMultiplier=2;
+	}
+	else if ((markerPeriod<2000000000) && (markerPeriod > 1000000000)) {
+		markerPeriod=1000000000;
+		markerUnit=' billion';
+		markerMultiplier=1;
+	}
+	
+	
+	else if ((markerPeriod<1000000000) && (markerPeriod > 500000000)) {
+		markerPeriod=500000000;
+		markerUnit='00 million';
+		markerMultiplier=5;
+	}
+	
+	
+	else if ((markerPeriod<500000000) && (markerPeriod > 250000000)) {
+		markerPeriod=250000000;
+		markerUnit='0 million';
+		markerMultiplier=25;
+	}
+	
+	else if ((markerPeriod<500000000) && (markerPeriod > 100000000)) {
+		markerPeriod=100000000;
+		markerUnit='00 million';
+	}
+	
+	else if ((markerPeriod<100000000) && (markerPeriod > 50000000)) {
+		markerPeriod=50000000;
+		markerUnit='0 million';
+		markerMultiplier=5;
+	}
+	
+	else if ((markerPeriod<50000000) && (markerPeriod > 25000000)) {
+		markerPeriod=25000000;
+		markerUnit=' million';
+		markerMultiplier=25;
+	}
+	
+	else if ((markerPeriod<50000000) && (markerPeriod > 10000000)) {
+		markerPeriod=10000000;
+		markerUnit='0 million';
+		markerMultiplier=1;
+	}
+	else if ((markerPeriod<10000000) && (markerPeriod > 1000000)) {
+		markerPeriod=1000000;
+		markerUnit=' million';
+		markerMultiplier=1;
+	}
+	else if ((markerPeriod<1000000) && (markerPeriod > 100000)) {
+		markerPeriod=100000;
+		markerUnit='00,000';
+	}
+	else if ((markerPeriod<100000) && (markerPeriod > 10000)) {
+		markerPeriod=10000;
+		markerUnit='0 thousand';
+	}
+	else if ((markerPeriod<10000) && (markerPeriod > 1000)) {
+		markerPeriod=1000;
+		markerUnit=' thousand';
+	}
+	else if ((markerPeriod<1000) && (markerPeriod > 100)) {
+		markerPeriod=100;
+		markerUnit='00 ';
+	}
+	else if ((markerPeriod<100) && (markerPeriod > 10)) {
+		markerPeriod=10;
+		markerUnit='0 ';
+	}
+	else {
+		markerPeriod=1;
+		markerUnit=' ';
+	}
+	
+	
+	
+	
+	var noOfMarkers=windowSpan/markerPeriod;
+	
+	
+	for (var p=1; p<=noOfMarkers; p++){
+	
+		var xOffset=Math.floor((markerPeriod/wholeSpan)*pixelWidth);
+	
+		$('#reference_ruler').append('<div id="marker'+p+'" class="marker">'+(p*markerMultiplier)+markerUnit+' years ago</div></div>');
+		$('#marker'+p).css('left', Math.abs(baseX)+(xOffset*p));
+	}
+		
+
+}
+
+</script>
+
+
+
+</head>
+<body onload="init()">
+<div id="tools"><span id="zoomButtons"><a href='javascript:zoomIn()'>Zoom In</a><a href='javascript:zoomOut()'>Zoom Out</a><a href='javascript:scrollLeft(100)'>Scroll Left</a><a href='javascript:scrollRight(100)'>Scroll Right</a></span>
+
+</div>
+
+<div id="timeline_container">
+
+
+</div><!-- end timeline_container -->
+
+<div id="timeSpan_labels"> 
+
+
+</div><!-- end timeSpan_labels -->
+
+
+</body>
+
+
+
+
+</html>
