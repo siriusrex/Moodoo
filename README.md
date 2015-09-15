@@ -34,3 +34,43 @@ These include:
 - access weather apis and display along with moods
 - export data - PDF, Word, excel, CSV, mysql
 - mood data API
+
+Moodoo dependencies & 3rd party tools
+
+1) jQuery
+
+2) janrain engage authentication module
+
+	a) OpenID
+	b) Google OpenID
+	c) Facebook OpenID
+	d) Twitter OpenID
+
+3) BurstSMS - to send sms messages as reminders or for panic button
+
+4) Markerclusterer (Moodoo 1.0) - to cluster map markers on Google Maps
+
+5) Google geolocation API
+
+6) Google Maps API
+
+7) Google webmaster tools
+
+8) Facebook app
+
+9) Twitter account - MoodooMoodApp
+
+10) PHP 5
+
+11) MySQL
+
+12) Javascript
+
+13) HTML5
+
+14) CSS3
+
+15) Modernizr
+
+16) jquery cookie
+
